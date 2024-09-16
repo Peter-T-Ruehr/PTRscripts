@@ -1,0 +1,103 @@
+---
+title: "PTRscripts Vignette"
+output: pdf_document # rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{PTRscripts Vignette}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup, warning=FALSE, message=FALSE}
+library(PTRscripts)
+library(ape)
+library(tidyverse)
+```
+
+```{r prepare_phylognes}
+set.seed(1)
+tree <- phytools::pbtree(n=10,scale=1)
+
+tree$tip.label <- LETTERS[ape::Ntip(tree):1]
+# plot(tree)
+
+```
+
+# Adding single tips
+```{r plot_tip_adding_single setup, warning=FALSE, message=FALSE}
+par(mfrow=c(1,4))
+
+tip_colors_orig <- tibble::tibble(tip = tree$tip.label, color = NA) %>%
+  mutate(color = case_when(grepl("^N", tip) ~ "red",
+                           tip == "C" ~ "green",
+                           TRUE ~ "darkgreen"))
+
+plot.phylo(tree,
+           mar=c(0.1,0.1,1.1,0.1),
+           cex=1.5,
+           tip.color = tip_colors_orig$color)
+title(main = paste0("original"), cex.main=1.5)
+
+for(i in c(.2,.5,.8)){ # c(.1,.25,.5,.75,.9)
+  tree_new1 <- add_cherry_to_tip(tree = tree,
+                                 tip = "C",
+                                 new_tips = "N1",
+                                 position = i)
+
+
+  # get colors
+  tip_colors <- tibble::tibble(tip = tree_new1$tip.label, color = NA) %>%
+    mutate(color = case_when(grepl("^N", tip) ~ "red",
+                             tip == "C" ~ "green",
+                             TRUE ~ "darkgreen"))
+
+  plot.phylo(tree_new1,
+             mar=c(0.1,0.1,1.1,0.1),
+             cex=1.5,
+             tip.color = tip_colors$color)
+
+  title(main = paste0("pos.= ", i), cex.main=1.5)
+}
+
+par(mar=c(5.1,4.1,4.1,2.1))
+```
+
+
+# Adding multiple tips
+```{r plot_tip_adding_multiple setup, warning=FALSE, message=FALSE}
+par(mfrow=c(1,4))
+plot.phylo(tree,
+           mar=c(0.1,0.1,1.1,0.1),
+           cex=1.5,
+           tip.color = tip_colors_orig$color)
+title(main = paste0("original"), cex.main=1.5)
+
+i=.5
+for(i in c(.2,.5,.8)){ # c(.1,.25,.5,.75,.9)
+  tree_new1 <- add_cherry_to_tip(tree = tree,
+                                 tip = "C",
+                                 new_tips = c("N1", "N2", "N3", "N4"),
+                                 position = i)
+
+  # get colors
+  tip_colors <- tibble::tibble(tip = tree_new1$tip.label, color = NA) %>%
+    mutate(color = case_when(grepl("^N", tip) ~ "red",
+                             tip == "C" ~ "green",
+                             TRUE ~ "darkgreen"))
+
+  plot.phylo(tree_new1,
+             mar=c(0.1,0.1,1.1,0.1),
+             cex=1.5,
+             tip.color = tip_colors$color)
+
+  title(main = paste0("pos.= ", i), cex.main=1.5)
+}
+
+par(mar=c(5.1,4.1,4.1,2.1))
+```

@@ -13,13 +13,13 @@ RoxygenNote: 7.3.2
 Imports: 
   phytools,
   tidytree,
-  dplyr,
-  knitr
+  dplyr
 Depends: 
     R (>= 4.0)
 VignetteBuilder: knitr
 Suggests: 
     rmarkdown,
+    knitr,
     testthat (>= 3.0.0)
 Config/testthat/edition: 3
 Authors@R: 
