@@ -1,6 +1,9 @@
 ---
 title: "PTRscripts Vignette"
-output: pdf_document # rmarkdown::html_vignette
+output: 
+  pdf_document: # rmarkdown::html_vignette
+    toc: true
+    toc_depth: 3
 vignette: >
   %\VignetteIndexEntry{PTRscripts Vignette}
   %\VignetteEngine{knitr::rmarkdown}
@@ -14,13 +17,20 @@ knitr::opts_chunk$set(
 )
 ```
 
+Load the two necessary libraries for almost everything:
+
 ```{r setup, warning=FALSE, message=FALSE}
 library(PTRscripts)
-library(ape)
 library(tidyverse)
 ```
 
+# Phylogeny scripts
+
+## Adding tips to trees
+
 ```{r prepare_phylognes}
+library(ape)
+
 set.seed(1)
 tree <- phytools::pbtree(n=10,scale=1)
 
@@ -29,7 +39,7 @@ tree$tip.label <- LETTERS[ape::Ntip(tree):1]
 
 ```
 
-# Adding single tips
+### Adding single tips
 ```{r plot_tip_adding_single setup, warning=FALSE, message=FALSE}
 par(mfrow=c(1,4))
 
@@ -69,7 +79,7 @@ par(mar=c(5.1,4.1,4.1,2.1))
 ```
 
 
-# Adding multiple tips
+### Adding multiple tips
 ```{r plot_tip_adding_multiple setup, warning=FALSE, message=FALSE}
 par(mfrow=c(1,4))
 plot.phylo(tree,
