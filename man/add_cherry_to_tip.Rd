@@ -7,7 +7,7 @@
 add_cherry_to_tip(tree, tip, new_tips, position = 0.5)
 }
 \arguments{
-\item{tree}{Phylogenetic tree of class "phylo".}
+\item{tree}{A phylogenetic tree of class \code{phylo}.}
 
 \item{tip}{A single character variable containing the exact tip name of the
 sister froup of the new taxon. Must be present as a tree$tip.label.}
@@ -18,11 +18,19 @@ containing the tip names to add.}
 \item{position}{A numeric value between\code{0} and \code{1} to set where on the edge
 leading to the sister tip the new splitting node should be placed.}
 }
+\value{
+A Phylogenetic tree of class \code{phylo}.
+}
 \description{
 Adds taxon as sister to a tip.
 }
 \examples{
 set.seed(1)
+# library(tibble)
+# library(phytools)
+# library(ape)
+library(dplyr)
+
 tree <- phytools::pbtree(n=10,scale=1)
 
 tree$tip.label <- LETTERS[ape::Ntip(tree):1]
@@ -35,7 +43,7 @@ tip_colors_orig <- tibble::tibble(tip = tree$tip.label, color = NA) \%>\%
                            tip == "C" ~ "green",
                            TRUE ~ "darkgreen"))
 
-plot.phylo(tree,
+ape::plot.phylo(tree,
            mar=c(0.1,0.1,1.1,0.1),
            cex=1.5,
            tip.color = tip_colors_orig$color)
@@ -54,7 +62,7 @@ for(i in c(.2,.5,.8)){ # c(.1,.25,.5,.75,.9)
                              tip == "C" ~ "green",
                              TRUE ~ "darkgreen"))
 
-  plot.phylo(tree_new1,
+  ape::plot.phylo(tree_new1,
              mar=c(0.1,0.1,1.1,0.1),
              cex=1.5,
              tip.color = tip_colors$color)
@@ -62,13 +70,12 @@ for(i in c(.2,.5,.8)){ # c(.1,.25,.5,.75,.9)
   title(main = paste0("pos.= ", i), cex.main=1.5)
 }
 
-plot.phylo(tree,
+ape::plot.phylo(tree,
            mar=c(0.1,0.1,1.1,0.1),
            cex=1.5,
            tip.color = tip_colors_orig$color)
 title(main = paste0("original"), cex.main=1.5)
 
-i=.5
 for(i in c(.2,.5,.8)){ # c(.1,.25,.5,.75,.9)
 tree_new1 <- add_cherry_to_tip(tree = tree,
                                  tip = "C",
@@ -81,7 +88,7 @@ tree_new1 <- add_cherry_to_tip(tree = tree,
                              tip == "C" ~ "green",
                              TRUE ~ "darkgreen"))
 
-  plot.phylo(tree_new1,
+  ape::plot.phylo(tree_new1,
              mar=c(0.1,0.1,1.1,0.1),
              cex=1.5,
              tip.color = tip_colors$color)

@@ -1,15 +1,20 @@
 #' Adds taxon as sister to a tip.
-#' @param tree Phylogenetic tree of class "phylo".
+#' @param tree A phylogenetic tree of class `phylo`.
 #' @param tip A single character variable containing the exact tip name of the
 #' sister froup of the new taxon. Must be present as a tree$tip.label.
 #' @param new_tips A single character variable or a string of characters
 #' containing the tip names to add.
 #' @param position A numeric value between`0` and `1` to set where on the edge
 #' leading to the sister tip the new splitting node should be placed.
-#' @return
+#' @return A Phylogenetic tree of class `phylo`.
 #' @export
 #' @examples
 #' set.seed(1)
+#' # library(tibble)
+#' # library(phytools)
+#' # library(ape)
+#' library(dplyr)
+#'
 #' tree <- phytools::pbtree(n=10,scale=1)
 #'
 #' tree$tip.label <- LETTERS[ape::Ntip(tree):1]
@@ -22,7 +27,7 @@
 #'                            tip == "C" ~ "green",
 #'                            TRUE ~ "darkgreen"))
 #'
-#' plot.phylo(tree,
+#' ape::plot.phylo(tree,
 #'            mar=c(0.1,0.1,1.1,0.1),
 #'            cex=1.5,
 #'            tip.color = tip_colors_orig$color)
@@ -41,7 +46,7 @@
 #'                              tip == "C" ~ "green",
 #'                              TRUE ~ "darkgreen"))
 #'
-#'   plot.phylo(tree_new1,
+#'   ape::plot.phylo(tree_new1,
 #'              mar=c(0.1,0.1,1.1,0.1),
 #'              cex=1.5,
 #'              tip.color = tip_colors$color)
@@ -49,13 +54,12 @@
 #'   title(main = paste0("pos.= ", i), cex.main=1.5)
 #' }
 #'
-#' plot.phylo(tree,
+#' ape::plot.phylo(tree,
 #'            mar=c(0.1,0.1,1.1,0.1),
 #'            cex=1.5,
 #'            tip.color = tip_colors_orig$color)
 #' title(main = paste0("original"), cex.main=1.5)
 #'
-#' i=.5
 #' for(i in c(.2,.5,.8)){ # c(.1,.25,.5,.75,.9)
 #' tree_new1 <- add_cherry_to_tip(tree = tree,
 #'                                  tip = "C",
@@ -68,7 +72,7 @@
 #'                              tip == "C" ~ "green",
 #'                              TRUE ~ "darkgreen"))
 #'
-#'   plot.phylo(tree_new1,
+#'   ape::plot.phylo(tree_new1,
 #'              mar=c(0.1,0.1,1.1,0.1),
 #'              cex=1.5,
 #'              tip.color = tip_colors$color)
@@ -83,6 +87,7 @@ add_cherry_to_tip <- function(tree,
                               new_tips,
                               position = 0.5) {
 
+  require(tidytree)
   require(phytools)
   require(tidytree)
   require(dplyr)
@@ -108,7 +113,7 @@ add_cherry_to_tip <- function(tree,
   # Create the new cherry
   correct.topo = F
   while(correct.topo == F){
-    tree_to_add <- pbtree(n=length(new_tips)+1, nsim = 1)
+    tree_to_add <- phytools::pbtree(n=length(new_tips)+1, nsim = 1)
 
     # Naming the tips
     tree_to_add$tip.label <- c(tip, new_tips)
@@ -128,7 +133,7 @@ add_cherry_to_tip <- function(tree,
       # change branch lengths of tree
       if(length(new_tips) > 1){
         tree_to_add$edge.length <- rep(1, length(tree_to_add$edge.length))
-        tree_to_add <- chronopl(tree_to_add, lambda = 1, age.min = edge.length*(1-position), age.max = NULL, node = "root")
+        tree_to_add <- ape::chronopl(tree_to_add, lambda = 1, age.min = edge.length*(1-position), age.max = NULL, node = "root")
       } else if(length(new_tips) == 1){
         tree_to_add$edge.length <- rep((edge.length*(1-position)), length(tree_to_add$edge.length))
       }
@@ -138,7 +143,7 @@ add_cherry_to_tip <- function(tree,
   #   theme_tree2()
 
   # Binding both trees
-  tree.bound <- bind.tree(tree, tree_to_add, where = tip_id)
+  tree.bound <- ape::bind.tree(tree, tree_to_add, where = tip_id)
 
   # ggtree(tree.bound) +
   #   theme_tree2()
@@ -148,7 +153,7 @@ add_cherry_to_tip <- function(tree,
 
   # get edge length of all tips (tip, new_tips)
   edge.number.all <- tree.bound$edge %>%
-    as_tibble() %>%
+    tibble::as_tibble() %>%
     mutate(rn = row_number()) %>%
     filter(V2 == mrca.tips) %>%
     pull(rn)
