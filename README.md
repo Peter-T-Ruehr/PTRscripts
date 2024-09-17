@@ -1,0 +1,22 @@
+
+# misc_R_scripts
+
+<!-- badges: start -->
+<!-- badges: end -->
+
+This is a package collection of some of my repeatedly used scripts.
+
+## Installation
+
+You can install the development version of PTRscripts from
+[GitHub](https://github.com/) with:
+
+``` r
+install_github("Peter-T-Ruehr/misc_R_scripts")
+```
+
+## Vognette
+
+Follow the
+<a href="https://github.com/Peter-T-Ruehr/misc_R_scripts/blob/main/vignettes/PTRscripts_vignette.pdf" target="_blank">vignette</a>
+for examples.
