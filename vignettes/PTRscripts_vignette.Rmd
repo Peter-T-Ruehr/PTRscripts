@@ -24,12 +24,25 @@ library(PTRscripts)
 library(tidyverse)
 ```
 
+# General scripts
+
+```{r leading_zeros, warning=FALSE, message=FALSE}
+# add leading zeros to numbers
+add_leading_zeros (numbers = c(1, 2, 3),
+                   length = 4)
+
+# add leading zeros to characters
+add_leading_zeros (numbers = c("01", "2", "003"),
+                   length = 4)
+```
+
 # Phylogeny scripts
 
 ## Adding tips to trees
 
 ```{r prepare_phylognes}
-library(ape)
+#library(ape)
+#library(phytools)
 
 set.seed(1)
 tree <- phytools::pbtree(n=10,scale=1)
@@ -41,6 +54,8 @@ tree$tip.label <- LETTERS[ape::Ntip(tree):1]
 
 ### Adding single tips
 ```{r plot_tip_adding_single setup, warning=FALSE, message=FALSE}
+# library(tibble)
+
 par(mfrow=c(1,4))
 
 tip_colors_orig <- tibble::tibble(tip = tree$tip.label, color = NA) %>%
@@ -48,7 +63,7 @@ tip_colors_orig <- tibble::tibble(tip = tree$tip.label, color = NA) %>%
                            tip == "C" ~ "green",
                            TRUE ~ "darkgreen"))
 
-plot.phylo(tree,
+ape::plot.phylo(tree,
            mar=c(0.1,0.1,1.1,0.1),
            cex=1.5,
            tip.color = tip_colors_orig$color)
@@ -67,7 +82,7 @@ for(i in c(.2,.5,.8)){ # c(.1,.25,.5,.75,.9)
                              tip == "C" ~ "green",
                              TRUE ~ "darkgreen"))
 
-  plot.phylo(tree_new1,
+  ape::plot.phylo(tree_new1,
              mar=c(0.1,0.1,1.1,0.1),
              cex=1.5,
              tip.color = tip_colors$color)
@@ -82,7 +97,7 @@ par(mar=c(5.1,4.1,4.1,2.1))
 ### Adding multiple tips
 ```{r plot_tip_adding_multiple setup, warning=FALSE, message=FALSE}
 par(mfrow=c(1,4))
-plot.phylo(tree,
+ape::plot.phylo(tree,
            mar=c(0.1,0.1,1.1,0.1),
            cex=1.5,
            tip.color = tip_colors_orig$color)
@@ -101,7 +116,7 @@ for(i in c(.2,.5,.8)){ # c(.1,.25,.5,.75,.9)
                              tip == "C" ~ "green",
                              TRUE ~ "darkgreen"))
 
-  plot.phylo(tree_new1,
+  ape::plot.phylo(tree_new1,
              mar=c(0.1,0.1,1.1,0.1),
              cex=1.5,
              tip.color = tip_colors$color)
