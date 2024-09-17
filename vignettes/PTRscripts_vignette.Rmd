@@ -9,31 +9,61 @@ vignette: >
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
-
+  
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
-  collapse = TRUE,
-  comment = "#>"
+collapse = TRUE,
+comment = "#>"
 )
 ```
-
+  
 Load the two necessary libraries for almost everything:
-
+  
 ```{r setup, warning=FALSE, message=FALSE}
 library(PTRscripts)
 library(tidyverse)
 ```
 
 # General scripts
-
+## Adding leading zeros
 ```{r leading_zeros, warning=FALSE, message=FALSE}
 # add leading zeros to numbers
-add_leading_zeros (numbers = c(1, 2, 3),
+add_leading_zeros(numbers = c(1, 2, 3),
                    length = 4)
 
 # add leading zeros to characters
-add_leading_zeros (numbers = c("01", "2", "003"),
+add_leading_zeros(numbers = c("01", "2", "003"),
                    length = 4)
+```
+
+
+
+## Create empty tibble
+
+```{r empty_tibble, warning=FALSE, message=FALSE}
+# empty tibble with zero rows and character columns
+empty_tibble(nrow = 0,
+             names = c("col1", "col2", "col3"),
+             type = "character")
+
+# empty tibble with three rows and numeric columns
+empty_tibble(nrow = 3,
+             names = c("col1", "col2", "col3"),
+             type = "number")
+
+# empty tibble with five rows and factor columns
+empty_tibble(nrow = 5,
+             names = c("col1", "col2", "col3"),
+             type = "factor")
+```
+
+## Show loop progress in percent
+
+```{r print_loop_progress, warning=FALSE, message=FALSE}
+n = 100
+for(i in 1:n){
+  print_progress(i, n)
+}
 ```
 
 # Phylogeny scripts
@@ -64,9 +94,9 @@ tip_colors_orig <- tibble::tibble(tip = tree$tip.label, color = NA) %>%
                            TRUE ~ "darkgreen"))
 
 ape::plot.phylo(tree,
-           mar=c(0.1,0.1,1.1,0.1),
-           cex=1.5,
-           tip.color = tip_colors_orig$color)
+                mar=c(0.1,0.1,1.1,0.1),
+                cex=1.5,
+                tip.color = tip_colors_orig$color)
 title(main = paste0("original"), cex.main=1.5)
 
 for(i in c(.2,.5,.8)){ # c(.1,.25,.5,.75,.9)
@@ -74,19 +104,19 @@ for(i in c(.2,.5,.8)){ # c(.1,.25,.5,.75,.9)
                                  tip = "C",
                                  new_tips = "N1",
                                  position = i)
-
-
+  
+  
   # get colors
   tip_colors <- tibble::tibble(tip = tree_new1$tip.label, color = NA) %>%
     mutate(color = case_when(grepl("^N", tip) ~ "red",
                              tip == "C" ~ "green",
                              TRUE ~ "darkgreen"))
-
+  
   ape::plot.phylo(tree_new1,
-             mar=c(0.1,0.1,1.1,0.1),
-             cex=1.5,
-             tip.color = tip_colors$color)
-
+                  mar=c(0.1,0.1,1.1,0.1),
+                  cex=1.5,
+                  tip.color = tip_colors$color)
+  
   title(main = paste0("pos.= ", i), cex.main=1.5)
 }
 
@@ -98,9 +128,9 @@ par(mar=c(5.1,4.1,4.1,2.1))
 ```{r plot_tip_adding_multiple setup, warning=FALSE, message=FALSE}
 par(mfrow=c(1,4))
 ape::plot.phylo(tree,
-           mar=c(0.1,0.1,1.1,0.1),
-           cex=1.5,
-           tip.color = tip_colors_orig$color)
+                mar=c(0.1,0.1,1.1,0.1),
+                cex=1.5,
+                tip.color = tip_colors_orig$color)
 title(main = paste0("original"), cex.main=1.5)
 
 i=.5
@@ -109,18 +139,18 @@ for(i in c(.2,.5,.8)){ # c(.1,.25,.5,.75,.9)
                                  tip = "C",
                                  new_tips = c("N1", "N2", "N3", "N4"),
                                  position = i)
-
+  
   # get colors
   tip_colors <- tibble::tibble(tip = tree_new1$tip.label, color = NA) %>%
     mutate(color = case_when(grepl("^N", tip) ~ "red",
                              tip == "C" ~ "green",
                              TRUE ~ "darkgreen"))
-
+  
   ape::plot.phylo(tree_new1,
-             mar=c(0.1,0.1,1.1,0.1),
-             cex=1.5,
-             tip.color = tip_colors$color)
-
+                  mar=c(0.1,0.1,1.1,0.1),
+                  cex=1.5,
+                  tip.color = tip_colors$color)
+  
   title(main = paste0("pos.= ", i), cex.main=1.5)
 }
 

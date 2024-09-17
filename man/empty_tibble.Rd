@@ -18,7 +18,19 @@ Takes \code{number}, 'character\verb{, or }factor\code{. }Default = number`.}
 Create empty tibble with column names and column types.
 }
 \examples{
+# empty tibble with zero rows and character columns
 empty_tibble(nrow = 0,
-              names = c("col1", "col2", "col3"),
-              type = "character")
+             names = c("col1", "col2", "col3"),
+             type = "character")
+
+# empty tibble with three rows and numeric columns
+empty_tibble(nrow = 3,
+             names = c("col1", "col2", "col3"),
+             type = "number")
+
+# empty tibble with five rows and factor columns
+empty_tibble(nrow = 5,
+             names = c("col1", "col2", "col3"),
+             type = "factor")
+
 }
