@@ -11,9 +11,14 @@ BugReports: https://github.com/Peter-T-Ruehr/compound_vision_3D/issues
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.2
 Imports: 
-  phytools,
-  tidytree,
-  dplyr
+    phytools,
+    tidytree,
+    stringr,
+    tibble,
+    taxize,
+    rgbif,
+    dplyr,
+    magrittr
 Depends: 
     R (>= 4.0)
 VignetteBuilder: knitr
