@@ -16,7 +16,15 @@ collapse = TRUE,
 comment = "#>"
 )
 ```
-  
+
+# Installation
+
+Install the package by running
+
+```{r installation, warning=FALSE, message=FALSE, eval=FALSE}
+install_github("Peter-T-Ruehr/misc_R_scripts")
+```
+
 Load the two necessary libraries for almost everything:
   
 ```{r setup, warning=FALSE, message=FALSE}
